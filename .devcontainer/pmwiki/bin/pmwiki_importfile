@@ -1,0 +1,65 @@
+#!//usr/bin/python3
+
+import sys
+import os
+
+def printUsageAndAbort():
+    from textwrap import dedent
+    script=os.path.basename(sys.argv[0])
+
+    usage = dedent(f"""
+    Usage: {script} INPUTFILE OUTPUTFILE
+    Imports text content of INPUTFILE as a wikipage in OUTPUTFILE.
+
+    The encoding of the wikipage is assumed to be UTF-8.
+    Setup you pmwiki website to use UTF-8 by following instructions at:
+    https://www.pmwiki.org/wiki/PmWiki/UTF-8
+    In the future, PmWiki will change to use the UTF-8 encoding by default. 
+    """).strip()
+    print(usage)
+    sys.exit()
+
+
+def verifyInputfile(inputfile):
+    """verify inputfile exists and is readable""" 
+    from os import access, R_OK
+    from os.path import isfile
+    if not isfile(inputfile) or not access(inputfile, R_OK):
+        print(f"File {inputfile} doesn't exist or isn't readable")
+        print("\n")
+        printUsageAndAbort()
+
+
+if len(sys.argv) != 3:
+    printUsageAndAbort()
+
+inputfile=sys.argv[1]
+verifyInputfile(inputfile) # aborts script when not verified valid
+outputfile=sys.argv[2]
+
+
+
+infile = open(inputfile, 'r', encoding="utf-8")
+
+readchars=[]
+while 1:
+    # read by char
+    char = infile.read(1)         
+    if not char:
+        break
+    if  char == '\n':
+        readchars.append("%0a")
+    elif char == '%':
+        readchars.append("%25")
+    elif char == '<':
+        readchars.append("%3c")
+    else: 
+        readchars.append(char)
+    
+infile.close()
+
+outfile = open(outputfile, 'w', encoding="utf-8")
+outfile.write("version=pmwiki-2.3.22 ordered=1 urlencoded=1\ncharset=UTF-8\ntext=")
+for char in readchars:
+    outfile.write(char)
+outfile.close()

@@ -1,0 +1,2 @@
+version=pmwiki-2.3.37 ordered=1 urlencoded=1
+text=%25sidehead%25 %0a''[--Cookbook--]''\\%0aBibtexPages%0a%0a* [[Main/HomePage]]%0a* [[Main/BibtexPages| Recipe ]]%0a* [[https://github.com/harcokuppens/pmwiki-cookbook-bibtexpages| Repository]]%0a%0a%0a%25sidehead%25 Developer Info %0a%0a* [[PmWiki/Version | PmWiki version ]]%0a* [[PmWiki/Version?action=phpinfo | phpinfo ]]%0a%0a%25right%25 [-[[Main.SideBar?action=edit | edit SideBar]]-]
