@@ -2,8 +2,7 @@
 
 ## Description
 
-<span style="color:red">PUT HERE A SHORT DESCRIPTION OF THE COOKBOOK. THE DETAILS ARE
-AT RECIPE PAGE.</span>
+Show a group's publication list in a wiki page where its bibtex source can be maintained by editing the per year pages in the special PmWiki Bibtex group.
 
 The details of the BibtexPages cookbook are described on
 [the BibtexPages cookbook's recipe page](https://www.pmwiki.org/wiki/Cookbook/BibtexPages).
