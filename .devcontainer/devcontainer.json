@@ -20,6 +20,22 @@
   //"containerUser": "www-data", // set the user to run the container with; same as USER in Dockerfile or user in docker-compose.yml
   // make sure bind mounts within /var/www/html/pmwiki also are shown as owned by www-data (by default they are mounted as root)
   "postStartCommand": "chown  --quiet -R www-data:www-data /var/www/html/pmwiki||true",
+  // let language server ignore _GITREPO mount dir, because otherwise for each function the language server finds two definitions
+  "settings": {
+    "intelephense.files.exclude": [
+      "**/.git/**",
+      "**/.svn/**",
+      "**/.hg/**",
+      "**/CVS/**",
+      "**/.DS_Store/**",
+      "**/node_modules/**",
+      "**/bower_components/**",
+      "**/vendor/**/{Tests,tests}/**",
+      "**/.history/**",
+      "**/vendor/**/vendor/**",
+      "**/_GITREPO/**"
+    ]
+  },
   "customizations": {
     "vscode": {
       "extensions": [
