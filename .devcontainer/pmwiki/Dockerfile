@@ -400,6 +400,7 @@ RUN chmod -R a+rX /etc/ssl/private/
 #-----------------------------------------------------------------------------------------------------------
 # we use bibber binary which is in x64 format, when running docker on ARM mac we need to:    
 # add amd64 version for libstdc++6 where bibber's amd64 binary depends on when running in qemu amd64 emulator
-RUN if [[ "$TARGETPLATFORM" != "linux/amd64" ]]; then dpkg --add-architecture amd64; apt-get update; apt-get install libstdc++6:amd64; fi 
-
+ARG TARGETPLATFORM
+SHELL ["/bin/bash", "-c"]
+RUN if [[ "$TARGETPLATFORM" != "linux/amd64" ]]; then dpkg --add-architecture amd64; apt-get update; apt-get -y install libstdc++6:amd64; fi 
 
