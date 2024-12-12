@@ -1,2 +1,0 @@
-version=pmwiki-2.3.37 ordered=1 urlencoded=1
-text=%25sidehead%25 %0a''[--Cookbook--]''\\%0a${CONFIG_COOKBOOK_NAME}%0a%0a* [[Main/HomePage]]%0a* [[Main/${CONFIG_COOKBOOK_NAME}| Recipe ]]%0a* [[${CONFIG_COOKBOOK_REPO_URL}| Repository]]%0a%0a%0a%25sidehead%25 Developer Info %0a%0a* [[PmWiki/Version | PmWiki version ]]%0a* [[PmWiki/Version?action=phpinfo | phpinfo ]]%0a%0a%25right%25 [-[[Main.SideBar?action=edit | edit SideBar]]-]
