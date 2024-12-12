@@ -1,0 +1,3 @@
+version=pmwiki-2.3.22 ordered=1 urlencoded=1
+charset=UTF-8
+text=%25sidehead%25 Bibtex%0a* [[Bibtex | Description]]%0a%0a%25sidehead%25 Generated %0a* [[Publications | Publications]]%0a* [[Publications?srcpublications | Source ]]%0a* [[Publications?rawsrcpublications | Raw Source ]]%0a%0a%25sidehead%25 Bibtex Definitions %0a* [[Definitions | Definitions]]%0a%0a%25sidehead%25 Bibtex per year%0a(:pagelist name=Bibtex.19*,Bibtex.20* fmt=#simplename order=-name:)%0a

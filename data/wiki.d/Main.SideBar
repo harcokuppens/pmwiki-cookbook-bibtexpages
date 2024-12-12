@@ -1,2 +1,90 @@
 version=pmwiki-2.3.37 ordered=1 urlencoded=1
-text=%25sidehead%25 %0a''[--Cookbook--]''\\%0aBibtexPages%0a%0a* [[Main/HomePage]]%0a* [[Main/BibtexPages| Recipe ]]%0a* [[https://github.com/harcokuppens/pmwiki-cookbook-bibtexpages| Repository]]%0a%0a%0a%25sidehead%25 Developer Info %0a%0a* [[PmWiki/Version | PmWiki version ]]%0a* [[PmWiki/Version?action=phpinfo | phpinfo ]]%0a%0a%25right%25 [-[[Main.SideBar?action=edit | edit SideBar]]-]
+agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15
+author=admin
+charset=UTF-8
+csum=
+ctime=1733961015
+host=172.18.0.1
+name=Main.Sidebar
+rev=26
+targets=Main.HomePage,Main.BibtexPages,Main.Publications,Bibtex.Bibtex,PmWiki.Version,Main.SideBar
+text=%25sidehead%25  ''[--Cookbook--]''\\%0aBibtexPages%0a* [[HomePage]]%0a* [[BibtexPages|Recipe]]%0a%0a%25sidehead%25 Bibtex%0a* [[Main.Publications|Publications]]%0a* [[Bibtex.Bibtex| Bibtex Data]]%0a%0a%25sidehead%25 Developer Info %0a* [[PmWiki.Version | PmWiki version ]]%0a* [[PmWiki.Version?action=phpinfo | phpinfo ]]%0a%0a%25right%25 [-[[SideBar?action=edit | edit SideBar]]-]
+time=1733963714
+author:1733963714=admin
+diff:1733963714:1733963658:=2a3%0a> %0a6a8%0a> %0a10a13%0a> %0a
+host:1733963714=172.18.0.1
+author:1733963658=admin
+diff:1733963658:1733963637:=2,3c2,3%0a%3c BibtexPages%0a%3c %0a---%0a> BibtexPagess%0a> %0a9,15c9%0a%3c * [[Main.Publications|Publications]]%0a%3c * [[Bibtex.Bibtex| Bibtex Data]]%0a%3c %0a%3c %25sidehead%25 Developer Info %0a%3c %0a%3c * [[PmWiki.Version | PmWiki version ]]%0a%3c * [[PmWiki.Version?action=phpinfo | phpinfo ]]%0a---%0a> %0a
+host:1733963658=172.18.0.1
+author:1733963637=admin
+diff:1733963637:1733963620:=5c5%0a%3c * [[BibtexPages|Recipe]]%0a---%0a> * [[BibtexPages | Recipe]]%0a
+host:1733963637=172.18.0.1
+author:1733963620=admin
+diff:1733963620:1733963405:=5c5%0a%3c * [[BibtexPages | Recipe]]%0a---%0a> * [[BibtexPages|Recipe]]%0a
+host:1733963620=172.18.0.1
+author:1733963405=admin
+diff:1733963405:1733963371:=2c2%0a%3c BibtexPagess%0a---%0a> BibtexPages%0a
+host:1733963405=172.18.0.1
+author:1733963371=admin
+diff:1733963371:1733963356:=9c9,15%0a%3c %0a---%0a> * [[Main.Publications|Publications]]%0a> * [[Bibtex.Bibtex| Bibtex Data]]%0a> %0a> %25sidehead%25 Developer Info %0a> %0a> * [[PmWiki.Version | PmWiki version ]]%0a> * [[PmWiki.Version?action=phpinfo | phpinfo ]]%0a
+host:1733963371=172.18.0.1
+author:1733963356=admin
+diff:1733963356:1733963342:=5c5%0a%3c * [[BibtexPages|Recipe]]%0a---%0a> * [[Main.BibtexPages|Recipe]]%0a
+host:1733963356=172.18.0.1
+author:1733963342=admin
+diff:1733963342:1733963328:=17c17%0a%3c %25right%25 [-[[SideBar?action=edit | edit SideBar]]-]%0a\ No newline at end of file%0a---%0a> %25right%25 [-[[Main.SideBar?action=edit | edit SideBar]]-]%0a\ No newline at end of file%0a
+host:1733963342=172.18.0.1
+author:1733963328=admin
+diff:1733963328:1733963315:=4c4%0a%3c * [[HomePage]]%0a---%0a> * [[Main.HomePage]]%0a
+host:1733963328=172.18.0.1
+author:1733963315=admin
+diff:1733963315:1733963291:=
+host:1733963315=172.18.0.1
+author:1733963291=admin
+diff:1733963291:1733963149:=4,6c4,7%0a%3c * [[Main.HomePage]]%0a%3c * [[Main.BibtexPages|Recipe]]%0a%3c %0a---%0a> * [[Main/HomePage]]%0a> * [[Main/BibtexPages|Recipe]]%0a> * [[https://github.com/harcokuppens/pmwiki-cookbook-bibtexpages| Repository]]%0a> %0a9,11c10,12%0a%3c * [[Main.Publications|Publications]]%0a%3c * [[Bibtex.Bibtex| Bibtex Data]]%0a%3c %0a---%0a> * [[Main/Publications|Publications]]%0a> * [[Bibtex/Bibtex| Bibtex Data]]%0a> %0a14,15c15,16%0a%3c * [[PmWiki.Version | PmWiki version ]]%0a%3c * [[PmWiki.Version?action=phpinfo | phpinfo ]]%0a---%0a> * [[PmWiki/Version | PmWiki version ]]%0a> * [[PmWiki/Version?action=phpinfo | phpinfo ]]%0a
+host:1733963291=172.18.0.1
+author:1733963149=admin
+diff:1733963149:1733961425:=
+host:1733963149=172.18.0.1
+author:1733961425=admin
+diff:1733961425:1733961373:=1,18c1,6%0a%3c %25sidehead%25  ''[--Cookbook--]''\\%0a%3c BibtexPages%0a%3c %0a%3c * [[Main/HomePage]]%0a%3c * [[Main/BibtexPages|Recipe]]%0a%3c * [[https://github.com/harcokuppens/pmwiki-cookbook-bibtexpages| Repository]]%0a%3c %0a%3c %25sidehead%25 Bibtex%0a%3c %0a%3c * [[Main/Publications|Publications]]%0a%3c * [[Bibtex/Bibtex| Bibtex Data]]%0a%3c %0a%3c %25sidehead%25 Developer Info %0a%3c %0a%3c * [[PmWiki/Version | PmWiki version ]]%0a%3c * [[PmWiki/Version?action=phpinfo | phpinfo ]]%0a%3c %0a%3c %25right%25 [-[[Main.SideBar?action=edit | edit SideBar]]-]%0a\ No newline at end of file%0a---%0a> %0a> * [[Main.Teaching | Projects for students]]%0a> * [[Main.People | People]]%0a> * [[Main.Vacancies | Vacancies]]%0a> * [[Main.Contact | Contact]]%0a> * [[https://wiki.icis-intra.cs.ru.nl/ | Intranet]]%0a\ No newline at end of file%0a
+host:1733961425=172.18.0.1
+author:1733961373=admin
+diff:1733961373:1733961354:=1c1,3%0a%3c %0a---%0a> * [[Main.HomePage | Homepage]]%0a> * [[Main.News | News]]%0a> * [[Main.Themes| Research]]%0a
+host:1733961373=172.18.0.1
+author:1733961354=admin
+diff:1733961354:1733961336:=3a4%0a> %0a
+host:1733961354=172.18.0.1
+author:1733961336=admin
+diff:1733961336:1733961321:=2a3%0a> %0a
+host:1733961336=172.18.0.1
+author:1733961321=admin
+diff:1733961321:1733961306:=3c3%0a%3c %0a---%0a> * [[Main.ResearchMission | Vision & Mission]]%0a
+host:1733961321=172.18.0.1
+author:1733961306=admin
+diff:1733961306:1733961294:=5c5,9%0a%3c %0a---%0a> ** [[Main.Themes | Research themes]]%0a> ** [[Main.Projects | Research projects]]%0a> ** [[Main.Publications | Publications]]%0a> ** [[Main.Software | Software]]%0a> ** [[Main.SWS_seminar | Seminar ]]%0a
+host:1733961306=172.18.0.1
+author:1733961294=admin
+diff:1733961294:1733961276:=4,14d3%0a%3c * [[Main.Themes| Research]]%0a%3c ** [[Main.Themes | Research themes]]%0a%3c ** [[Main.Projects | Research projects]]%0a%3c ** [[Main.Publications | Publications]]%0a%3c ** [[Main.Software | Software]]%0a%3c ** [[Main.SWS_seminar | Seminar ]]%0a%3c * [[Main.Teaching | Projects for students]]%0a%3c * [[Main.People | People]]%0a%3c * [[Main.Vacancies | Vacancies]]%0a%3c * [[Main.Contact | Contact]]%0a%3c * [[https://wiki.icis-intra.cs.ru.nl/ | Intranet]]%0a\ No newline at end of file%0a
+host:1733961294=172.18.0.1
+author:1733961276=admin
+diff:1733961276:1733961262:=3a4,15%0a> * [[Main.Themes| Research]]%0a> ** [[Main.Themes | Research themes]]%0a> ** [[Main.Projects | Research projects]]%0a> %0a> ** [[Main.Publications | Publications]]%0a> ** [[Main.Software | Software]]%0a> ** [[Main.SWS_seminar | Seminar ]]%0a> * [[Main.Teaching | Projects for students]]%0a> * [[Main.People | People]]%0a> * [[Main.Vacancies | Vacancies]]%0a> * [[Main.Contact | Contact]]%0a> * [[https://wiki.icis-intra.cs.ru.nl/ | Intranet]]%0a\ No newline at end of file%0a
+host:1733961276=172.18.0.1
+author:1733961262=admin
+diff:1733961262:1733961234:=7c7,8%0a%3c %0a---%0a> (:comment * [[Main.Collaborations | Collaborations]] :)%0a> (:comment * [[Main.Seminars | Seminars]] :)%0a8a10%0a> (:comment * [[Main.Datasets | Datasets]] :)%0a
+host:1733961262=172.18.0.1
+author:1733961234=admin
+diff:1733961234:1733961191:=1,17c1,15%0a%3c * [[Main.HomePage | Homepage]]%0a%3c * [[Main.News | News]]%0a%3c * [[Main.ResearchMission | Vision & Mission]]%0a%3c * [[Main.Themes| Research]]%0a%3c ** [[Main.Themes | Research themes]]%0a%3c ** [[Main.Projects | Research projects]]%0a%3c (:comment * [[Main.Collaborations | Collaborations]] :)%0a%3c (:comment * [[Main.Seminars | Seminars]] :)%0a%3c ** [[Main.Publications | Publications]]%0a%3c (:comment * [[Main.Datasets | Datasets]] :)%0a%3c ** [[Main.Software | Software]]%0a%3c ** [[Main.SWS_seminar | Seminar ]]%0a%3c * [[Main.Teaching | Projects for students]]%0a%3c * [[Main.People | People]]%0a%3c * [[Main.Vacancies | Vacancies]]%0a%3c * [[Main.Contact | Contact]]%0a%3c * [[https://wiki.icis-intra.cs.ru.nl/ | Intranet]]%0a\ No newline at end of file%0a---%0a> * [[Main/HomePage]]%0a> * [[Main/BibtexPages | Recipe]]%0a> bla%0a> * [[https://github.com/harcokuppens/pmwiki-cookbook-bibtexpages | Repository]]%0a> %0a> %0a> * [[Main/Publications | Publications]]%0a> * [[Bibtex/Bibtex  | Bibtex Data]]%0a> %0a> %0a> %0a> * [[PmWiki/Version | PmWiki version ]]%0a> * [[PmWiki/Version?action=phpinfo | phpinfo ]]%0a> %0a> %25right%25 [-[[Main.SideBar?action=edit | edit SideBar]]-]%0a\ No newline at end of file%0a
+host:1733961234=172.18.0.1
+author:1733961191=admin
+diff:1733961191:1733961158:=3d2%0a%3c bla%0a
+host:1733961191=172.18.0.1
+author:1733961158=admin
+diff:1733961158:1733961063:=0a1%0a> %0a2,7c3,8%0a%3c * [[Main/BibtexPages | Recipe]]%0a%3c * [[https://github.com/harcokuppens/pmwiki-cookbook-bibtexpages | Repository]]%0a%3c %0a%3c %0a%3c * [[Main/Publications | Publications]]%0a%3c * [[Bibtex/Bibtex  | Bibtex Data]]%0a---%0a> * [[Main/BibtexPages|Recipe]]%0a> * [[https://github.com/harcokuppens/pmwiki-cookbook-bibtexpages| Repository]]%0a> %0a> %0a> * [[Main/Publications|Publications]]%0a> * [[Bibtex/Bibtex| Bibtex Data]]%0a
+host:1733961158=172.18.0.1
+author:1733961063=admin
+diff:1733961063:1733961015:=1c1,3%0a%3c %0a---%0a> %25sidehead%25  ''[--Cookbook--]''\\%0a> BibtexPages%0a> %0a6c8,9%0a%3c %0a---%0a> %25sidehead%25 Bibtex%0a> %0a10c13%0a%3c %0a---%0a> %25sidehead%25 Developer Info %0a
+host:1733961063=172.18.0.1
+author:1733961015=admin
+diff:1733961015:1733961015:=1,18d0%0a%3c %25sidehead%25  ''[--Cookbook--]''\\%0a%3c BibtexPages%0a%3c %0a%3c * [[Main/HomePage]]%0a%3c * [[Main/BibtexPages|Recipe]]%0a%3c * [[https://github.com/harcokuppens/pmwiki-cookbook-bibtexpages| Repository]]%0a%3c %0a%3c %25sidehead%25 Bibtex%0a%3c %0a%3c * [[Main/Publications|Publications]]%0a%3c * [[Bibtex/Bibtex| Bibtex Data]]%0a%3c %0a%3c %25sidehead%25 Developer Info %0a%3c %0a%3c * [[PmWiki/Version | PmWiki version ]]%0a%3c * [[PmWiki/Version?action=phpinfo | phpinfo ]]%0a%3c %0a%3c %25right%25 [-[[Main.SideBar?action=edit | edit SideBar]]-]%0a\ No newline at end of file%0a
+host:1733961015=172.18.0.1

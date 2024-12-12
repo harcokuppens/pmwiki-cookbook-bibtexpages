@@ -1,0 +1,20 @@
+(:Summary:contains the edit page layout form:)
+!! Bibtex: $[Editing {*$FullName}] %block class=wikiaction%
+(:messages:)
+(:div id='wikiedit':)
+(:input e_form:)[[#top]]\\
+(:toggle-prism-highlight-button:)\\
+(:input e_textarea class='prism-live line-numbers language-bibtex fill' :)\\
+$[Summary]: (:input e_changesummary:)\\
+$[Author]: (:input e_author:) (:input e_minorcheckbox:) $[This is a minor edit]\\
+(:input e_savebutton:) (:input e_savedraftbutton:) (:input e_saveeditbutton:) (:input e_previewbutton:) (:input e_cancelbutton:)
+(:input end:)
+(:divend:)
+(:if e_preview:)
+!! $[Preview {*$FullName}]
+'''$[Page is unsaved]'''
+(:e_preview:)
+----
+'''$[End of preview -- remember to save]'''\\
+[[#top | $[Top] ]]
+(:ifend:)

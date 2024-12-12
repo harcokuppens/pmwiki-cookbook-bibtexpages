@@ -1,0 +1,3 @@
+version=pmwiki-2.3.37 ordered=1 urlencoded=1
+charset=UTF-8
+text=!Publications by Members of our Group%0a%0aBelow you find a list of publications from our group.  Members of our group can add new bibtex entries on our [[Bibtex/]] pages.%0a%0a(:includepublications:)

@@ -2,6 +2,15 @@
     exit();
 
 
+#------------------------------------
+# set more logical default locations
+#------------------------------------
+$DefaultName = 'Description'; # default page in any group (pmwiki's default: 'Homepage')
+$DefaultGroup = 'Main';       # site's  default group (pmwiki's default: 'Main')
+$DefaultPage = 'Main.HomePage'; # site's  default page  (pmwiki's default:  $DefaultGroup.$DefaultName)
+# if only single string ($1) specified instead of a full path $1.$2, then following path formatting array
+# will be used to make a full path from $1. The first substitution which matches a page is used. 
+$PagePathFmt = array('{$Group}.$1', '$1.{$DefaultName}', '$1.$1');
 
 #-----------------------------------------------
 #  authentication
@@ -125,7 +134,6 @@ Markup(
 //   Categories:
 //   (:if exists {$Name}-Talk:)Discussion: [[{$Name}-Talk]](:if:)
 //   >><<
-
 
 #-----------------------------------------------
 #  cookbook  
