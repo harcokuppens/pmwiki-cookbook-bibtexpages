@@ -73,15 +73,33 @@ function ValidateSource($pagename, &$page, &$new)
   # We cancel save if bibtex contains errors.
   $BibtexData = translateBibtex($data);
   $exitCode = $BibtexData['exitCode'];
-  if ($exitCode == 0) {
-    # pretty print source;
-    # if source is valid; then replace source with pretty printed source
-    $BibtexData = translateBibtex($data, 'ppbib');
-    $new['text'] = $BibtexData['output'];
-    # note: translating can be succesful but still an error can happen in pretty printing,
-    # which  still can be  catch in next if!
-    $exitCode = $BibtexData['exitCode'];
-  }
+
+  // PRETTY PRINTING
+  //TODO:
+  //  1. make it option with configuration parameter
+  //  2. currently  ppbib does also sort source -> not wanted, only formatting
+  //  3. extra spaces are added beforer {  -> think not a problem!
+  //  4. when parsing ok, but pp give error then
+  //         give warning: pp formatting skipped, data is saved as submitted 
+  //                       something went wrong in formatting, contact tech support to solve formatting
+  // 
+  // if ($exitCode == 0) {
+  //   # pretty print source;
+  //   # if source is valid; then replace source with pretty printed source
+  //   $BibtexData = translateBibtex($data, 'ppbib');
+
+  //   # note: translating can be succesful but still an error can happen in pretty printing,
+  //   # which  still can be  catch in next if!
+  //   $exitCode = $BibtexData['exitCode'];
+  //   // only do pp if ppbib succesful
+  //   if ($exitCode == 0) {
+  //      $new['text'] = $BibtexData['output'];
+  //   }
+  //   if ($exitCode != 0) {
+  //     // ignore pp error
+  //     $exitCode=0;
+  //   }
+  // }
   if ($exitCode != 0) {
     $EnablePost = 0;
     $errorText = $BibtexData['errorText'];
