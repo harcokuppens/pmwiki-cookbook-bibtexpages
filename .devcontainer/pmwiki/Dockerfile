@@ -25,7 +25,9 @@ ARG PMWIKI_DIR='/var/www/html/pmwiki'
 
 # use base php apache image which by default only supports http (no https)
 # ------------------------------------------------------------------------
-FROM php:7.4-apache
+
+FROM php:7.4-apache-bullseye    
+#FROM php:7.4-apache
 # src:
 #    php https://github.com/docker-library/docs/blob/master/php/README.md#apache-with-a-dockerfile
 #

@@ -72,7 +72,10 @@ function isBibtexDataPage($pagename): bool
 
 
 
-# enable editing bibtex in pmwiki with validation, preview and syntax highlighting  
+# enable 
+#  1. show history of bibtex changes 
+#  2. view bibtex formatted as html or as source with syntax highlighting , 
+#  3. editing bibtex in pmwiki with validation, preview and syntax highlighting      
 #----------------------------------------------------------------------------------
 
 if (isBibtexDataPage($pagename)) {
@@ -86,11 +89,13 @@ if (isBibtexDataPage($pagename)) {
   }
 
   # when showing history of bibtex (diff action)
+  # --------------------
   #  -  we do not show option to show diff in formatted markup, because bibtex source is not standard pmwiki markup source
   # see: scripts/pagerev.php
   SDV($PageDiffFmt, "<h2 class='wikiaction'>$[{\$FullName} History]</h2> <p>$DiffMinorFmt </p> ");
 
-  # when viewing bibtex (browse action)
+  # when viewing bibtex page (bibtex formatted as html) (browse action)
+  # -----------------------
   #   - display with bibber formatted page of the bibtex source
   #   - display formatted source of Bibtex.Definitions page 
   if ($pagename == "Bibtex.Definitions") {
@@ -100,11 +105,16 @@ if (isBibtexDataPage($pagename)) {
   }
 
   # when viewing source of bibtex (source action)
+  # -------------------
   #  - display bibtex source formatted
   $HandleActions["source"] = "HandleBibtexSourceInSkin";
+  $HandleActions["rawsource"] = "HandleBibtexRawSource";
 
   # when editing (edit action): 
-  #   - validate edited source is correct. If not the save is rejected with error message.
+  # -------------
+  #   - validate whether edited source is correct. 
+  #      -> If not the save is rejected with error message.
+  #      -> else (valid source) then standard pmwiki code saves the new text into pmwiki page
   #   - replace the standard preview function with our special variant for Bibtex
   include_once("$FarmD/scripts/simuledit.php");
   array_unshift($EditFunctions, 'ValidateSource');
