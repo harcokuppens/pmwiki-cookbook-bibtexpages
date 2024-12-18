@@ -145,7 +145,7 @@ function HandleBibtexPageNotFound($pagename)
 
 function HandleBibtexFormattedInSkin($pagename, $auth = 'edit')
 {
-  global $HandleSourceFmt, $PageStartFmt, $PageEndFmt, $FmtV, $MessagesFmt;
+  global $HandleSourceFmt, $PageStartFmt, $PageEndFmt, $FmtV, $MessagesFmt, $BibtexConfig;
   if (!PageExists($pagename)) {
     HandleBibtexPageNotFound($pagename, $pagename);
     return;
@@ -161,10 +161,10 @@ function HandleBibtexFormattedInSkin($pagename, $auth = 'edit')
     # editing bibtex is different from editing normal wiki pages,
     # therefore we give options to show an action menu specially for bibtex 
     # own action menu; 
-    if ($BibtexData['show_bibtex_action_menu']) {
+    if ($BibtexConfig['show_bibtex_action_menu']) {
       #$action_menu = "<br><hr><b>Bibtex actions: </b><br> &nbsp;&nbsp;<a href='?action=edit'>edit</a>  &nbsp;&nbsp; <a href='?action=source'>source</a> &nbsp;&nbsp; <a href='?action=rawsource'>raw source</a>  &nbsp;&nbsp; <a href='?action=rawhtml'>raw html</a><hr>";
       $action_menu = "<br><b>Bibtex actions: </b><br> &nbsp;&nbsp;<a href='?action=edit'>edit</a>  &nbsp;&nbsp; <a href='?action=source'>source</a> &nbsp;&nbsp; <a href='?action=rawsource'>raw source</a>  &nbsp;&nbsp; <a href='?action=rawhtml'>raw html</a>";
-      $html = $action_menu . $$html;
+      $html = $action_menu . $html;
     }
   }
   $messages = implode('', (array)$MessagesFmt);
