@@ -406,3 +406,10 @@ ARG TARGETPLATFORM
 SHELL ["/bin/bash", "-c"]
 RUN if [[ "$TARGETPLATFORM" != "linux/amd64" ]]; then dpkg --add-architecture amd64; apt-get update; apt-get -y install libstdc++6:amd64; fi 
 
+# In docker cookbook we can initialize bibtex data from a gitrepository and or we can save a backup 
+# a bibtex page to a similar named file in a git repository.
+# To do this the bibtex cookbook clones a git repository inside a docker container, and because it gets cloned
+# inside a bind mounted volume we can have problems met user ownership of the git repository.  Git will refuse
+# to work if folders have different owners, however by applying below command, then git will disable this security
+# feature and everything will work fine.
+RUN git config --system --add safe.directory '*'
