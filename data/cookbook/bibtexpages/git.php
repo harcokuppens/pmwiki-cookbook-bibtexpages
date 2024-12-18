@@ -1,29 +1,17 @@
 <?php if (!defined('PmWiki')) exit();
 
+#-----------------------------------------------------------------------------------------------
+#   setup
+#-----------------------------------------------------------------------------------------------
 
 # initialize local git repository for bibtex on the fly
 # -------------------------------------------------------
-#   when a request for a page in Bibtex group occurs and the gitdir does not yet exist, 
+#   when a request for a page in Bibtex group occurs and the git_dir does not yet exist, 
 #   then clone the remote git repo locally
 
-function  git_clone_bibtex_repo()
-{
-  global $pagename, $BibtexConfig;
-
-  # clone repo and import its .bib files as wiki pages 
-  $gitdir = $BibtexConfig['gitdir'];
-  $git_deploy_key = $BibtexConfig['git_deploy_key'];
-  $gitrepo = $BibtexConfig['gitrepo'];
-
-  $git_ssh_command = "GIT_SSH_COMMAND='ssh -i $git_deploy_key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' git";
-  executeShellCommand($pagename, "git clone", "$git_ssh_command clone $gitrepo $gitdir  2>&1", false);
-}
-
-if (!file_exists($BibtexConfig['gitdir'])) {
+if (!file_exists($BibtexConfig['git_dir'])) {
   git_clone_bibtex_repo();
 }
-
-
 
 # keep a backup of bibtex history in a git repository
 # -------------------------------------------------------
@@ -46,8 +34,27 @@ if (!file_exists($BibtexConfig['gitdir'])) {
 #       The git repository works as a mirror of the wiki pages in both content and history!
 
 # only backup page to git when you succesfully saved a bibtex data page
-if ($BibtexConfig['enableGitBackup'] && isBibtexDataPage($pagename) && $action == "edit"   &&   $EnablePost == true) {
+if ($BibtexConfig['enable_git_backup'] && isBibtexDataPage($pagename) && $action == "edit"   &&   $EnablePost == true) {
   $EditFunctions[] = "PostSaveBibtexDoGitBackup"; // Add to end of $EditFunctions
+}
+
+
+#-----------------------------------------------------------------------------------------------
+#   functions
+#-----------------------------------------------------------------------------------------------
+
+
+function  git_clone_bibtex_repo()
+{
+  global $pagename, $BibtexConfig;
+
+  # clone repo and import its .bib files as wiki pages 
+  $git_dir = $BibtexConfig['git_dir'];
+  $git_deploy_key =  $BibtexConfig['ssh_config_dir'] . "/" .  $BibtexConfig['git_deploy_key'];
+  $git_repo = $BibtexConfig['git_repo'];
+
+  $git_ssh_command = "GIT_SSH_COMMAND='ssh -i $git_deploy_key  -o IdentitiesOnly=yes  -o PreferredAuthentications=publickey -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ' git";
+  executeShellCommand($pagename, "git clone", "$git_ssh_command clone $git_repo $git_dir  2>&1", false);
 }
 
 function handleExecError($pagename, $descriptionCmd, $outputArray,  $retval, $inline = "true")
@@ -70,17 +77,17 @@ function PostSaveBibtexDoGitBackup($pagename, &$page, &$new)
 
   if ($EnablePost != true) return false; // skip save to git; page save can be aborted because of error in source.
 
-  $gitdir = $BibtexConfig['gitdir'];
+  $git_dir = $BibtexConfig['git_dir'];
   $emaildomain = $BibtexConfig['emaildomain'];
-  $git_deploy_key = $BibtexConfig['git_deploy_key'];
+  $git_deploy_key = $BibtexConfig['ssh_config_dir'] . "/" . $BibtexConfig['git_deploy_key'];
   $data = $new['text'];
   $shortname = PageVar($pagename, '$Name');
 
-  $source_outputfile = $gitdir . $shortname . ".bib";
+  $source_outputfile = $git_dir . $shortname . ".bib";
   $returnval = file_put_contents($source_outputfile, $data);
   if ($returnval == false) ErrorAbort($pagename, "saving bibtex source to file in git repo failed");
 
-  $git_ssh_command = "GIT_SSH_COMMAND='ssh -i $git_deploy_key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' git -c user.email=$AuthId@$emaildomain -c user.name=$AuthId -C $gitdir";
+  $git_ssh_command = "GIT_SSH_COMMAND='ssh -i $git_deploy_key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' git -c user.email=$AuthId@$emaildomain -c user.name=$AuthId -c safe.directory=* -C $git_dir";
 
   # with right user name ($AuthId)  and email ($AuthId@$emaildomain) do 
   # 1) commit 

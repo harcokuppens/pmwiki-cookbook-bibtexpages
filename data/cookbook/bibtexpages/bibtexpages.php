@@ -20,66 +20,93 @@ include_once("scripts/xlpage-utf-8.php");
 # and direct web access is disabled with .htaccess file for wiki.d/ folder.
 SDV($BibtexDataDir, "$FarmD/wiki.d/bibtexpages/");
 SDVA($BibtexConfig, [
-  'enablePublicationsPage'  => true,
-  'publications_source'     => "$BibtexDataDir/publications.bib",  # store publication source 
-  'publications_html'       => "$BibtexDataDir/publications.html", # and html
+  'enable_publications_page' => true,
+  'publications_dir'         => "$BibtexDataDir",
+  'publications_source'      => "publications.bib",  # store publication source 
+  'publications_html'        => "publications.html", # and html
+  'publications_link_html'   => true,  # whether publications directives shows on top a link to raw html   
+  'publications_link_source' => true,  # whether publications directives shows on top a link to raw bibtex source  
 
-  'enableGitBackup'         => false,  # on each edit of Bibtex wiki page a backup copy is saved in the git repo and pushed to remote.
-  'gitrepo'                 => "your-repo-url",   # url location of git repo using SSH  (git@GITSERVER:REPOPATH) 
-  'gitdir'                  => "$BibtexDataDir/bibtexrepo/",  # directory where git repo locally gets cloned
-  'git_deploy_key'          => "$BibtexDataDir/.ssh/id",  # ssh deploy key specific for repo used to authorize to the git repo
-  'emaildomain'             => "unknown.com",     # user name ($AuthId)  and email ($AuthId@$emaildomain)  used in git commit      
+  # editing bibtex is different from editing normal wiki pages, therefore we give options to show an action menu
+  # specially for bibtex own action menu; 
+  'show_bibtex_action_menu'  => true,
 
-  'initFromGit'             => false,  # SAFE: preserves existing pages; initialization from git only happens if no bibtex wiki pages are found
-  'initFromExampleData'     => true,  # SAFE: preserves existing pages; initialization from example data only happens if no bibtex wiki pages are found
-  # note: initFromGit is used if both are true 
+  'enable_git_backup'        => false,  # on each edit of Bibtex wiki page a backup copy is saved in the git repo and pushed to remote.
+  'git_repo'                 => "your-repo-url",   # url location of git repo using SSH  (git@GITSERVER:REPOPATH) 
+  'git_dir'                  => "$BibtexDataDir/bibtexrepo/",  # directory where git repo locally gets cloned
+  'ssh_config_dir'           => "$BibtexDataDir/.ssh/", # directory where ssh keys are stored 
+  'git_deploy_key'           => "id",  # ssh deploy key specific for repo used to authorize to the git repo
+  'emaildomain'              => "unknown.com",     # user name ($AuthId)  and email ($AuthId@$emaildomain)  used in git commit      
+
+  'init_from_git'             => false,  # SAFE: preserves existing pages; initialization from git only happens if no bibtex wiki pages are found
+  'init_from_example_data'     => true,  # SAFE: preserves existing pages; initialization from example data only happens if no bibtex wiki pages are found
+  # note: init_from_git is used if both are true 
   # note: to use one of the init options above you have to delete all bibtex data pages from wiki.d/ folder 
   #       either with command rm wiki.d/Bibtex.*  or manually using the wiki
 
 
-  'force_generate'          => false, # can be set to true temporary to force generation of a new publications.bib and publications.html from bibtex pages
+  'force_generate'          => false, # can be set to true (temporary) to force regeneration of new publications.bib and publications.html files from the bibtex pages
 ]);
 # note: We use a repository specific ssh deploy key which in gitlab has no expiration date. 
-#       We don not use a project access token specific for the repository because this token has a maximum expiration date of 1 year.
+#       We don not use a project access token specific for the repository because this token 
+#       has a maximum expiration date of 1 year.
 
 
-$pagename = MakePageName($DefaultPage, $pagename);
-
-
-// Add a custom wikipage storage location for bundles pages.
+// add configuration of a custom wikipage storage location for  pages bundled in cookbook folder.
 // idea from https://www.pmwiki.org/wiki/Cookbook/ModuleGuidelines
 global $WikiLibDirs;
 array_push($WikiLibDirs, new PageStore("$FarmD" . '/cookbook/bibtexpages/wikilib.d/{$FullName}'));
 
+# load generic utility functions needed for cookbook
+require_once("$FarmD/cookbook/bibtexpages/utils.php");
 
-# bibtex page filter 
-#--------------------
+# initialize 
+# ------------
 
-function isBibtexDataPage($pagename): bool
-{
-  $query1 = 'Bibtex.19';
-  $query2 = 'Bibtex.20';
-  if (
-    substr($pagename, 0, strlen($query1)) === $query1 ||
-    substr($pagename, 0, strlen($query2)) === $query2 ||
-    $pagename == "Bibtex.Definitions"
-  ) {
-    return true;
-  } else {
-    return false;
+# initialize stuff only on first request; later requests  
+
+# create BibtexDataDir if  needed and not yet exist
+if ($BibtexConfig['enable_git_backup'] || $BibtexConfig['init_from_git'] || $BibtexConfig['enable_publications_page']) {
+  if (! file_exists("$BibtexDataDir")) {
+    $returnval = mkdir("$BibtexDataDir");
+    if ($returnval == false) ErrorAbort($pagename, "problem in creating bibtexpages data directory", -1, false);
+  }
+}
+
+# initialize git repository if needed
+if ($BibtexConfig['enable_git_backup'] || $BibtexConfig['init_from_git']) require_once("$FarmD/cookbook/bibtexpages/git.php");
+
+# initialize bibtex wiki pages from bibtex git repository or example pages (only when no existing bibtex pages are found!)
+if ($BibtexConfig['init_from_git'] || $BibtexConfig['init_from_example_data']) {
+
+  # only init from git when no existing bibtex pages are found!
+  $bibfiles = array_merge(glob("$FarmD/wiki.d/Bibtex.[12]*"), glob("$FarmD/wiki.d/Bibtex.Definitions"));
+  if (!$bibfiles) {
+    # import .bib files from repo as pages in wiki in Bibtex group
+    require_once("$FarmD/cookbook/bibtexpages/importwikipagefromfile.php");
+    if ($BibtexConfig['init_from_git']) {
+      bibtex_importfiles($BibtexConfig['git_dir']);
+    } else {
+      bibtex_importfiles("$FarmD/cookbook/bibtexpages/exampledata/");
+    }
+    $BibtexConfig['force_generate'] = true;
   }
 }
 
 
+# deal bibtex pages specially
+#-----------------------------
 
-# enable 
+# enable for bibtex data page only
 #  1. show history of bibtex changes 
 #  2. view bibtex formatted as html or as source with syntax highlighting , 
 #  3. editing bibtex in pmwiki with validation, preview and syntax highlighting      
-#----------------------------------------------------------------------------------
 
+$pagename = MakePageName($DefaultPage, $pagename);
 if (isBibtexDataPage($pagename)) {
 
+
+  # include functions specific for bibtex data pages
   require_once("$FarmD/cookbook/bibtexpages/bibtexutils.php");
 
   # enable syntax highlighting for Bibtex
@@ -109,6 +136,7 @@ if (isBibtexDataPage($pagename)) {
   #  - display bibtex source formatted
   $HandleActions["source"] = "HandleBibtexSourceInSkin";
   $HandleActions["rawsource"] = "HandleBibtexRawSource";
+  $HandleActions["rawhtml"] = "HandleBibtexRawHtml";
 
   # when editing (edit action): 
   # -------------
@@ -121,54 +149,7 @@ if (isBibtexDataPage($pagename)) {
   $EditFunctions = str_replace("PreviewPage", "PreviewPageBibtex", $EditFunctions);
 }
 
-# function to abort after which current page is shown with error at top in the view
-#------------------------------------------------------------------------------------------
 
-function ErrorAbort($pagename, $errormsg, $errorcode = -1, $inline = true)
-{
-  $codemsg = "";
-  if ($errorcode != -1) $codemsg = "($errorcode)";
-  $msg = "<br><p style='color:red'> <b> ERROR$codemsg: $errormsg </b></p>\n";
-  if ($inline) {
-    HandleDispatch($pagename, 'browse', $msg);
-  } else {
-    # at some points in code we cannot display error message inline so we just print it, and exit.
-    print($msg);
-  }
-  exit;
-}
-
-# create BibtexDataDir if  needed and not yet exist
-if ($BibtexConfig['enableGitBackup'] || $BibtexConfig['initFromGit'] || $BibtexConfig['enablePublicationsPage']) {
-  if (! file_exists("$BibtexDataDir")) {
-    $returnval = mkdir("$BibtexDataDir");
-    if ($returnval == false) ErrorAbort($pagename, "problem in creating bibtexpages data directory", -1, false);
-  }
-}
-
-if ($BibtexConfig['enableGitBackup'] || $BibtexConfig['initFromGit']) require_once("$FarmD/cookbook/bibtexpages/git.php");
-
-# initialize bibtex wiki pages from bibtex git repository (only when no existing bibtex pages are found!)
-# -------------------------------------------------------
-
-
-if ($BibtexConfig['initFromGit'] || $BibtexConfig['initFromExampleData']) {
-
-  # only init from git when no existing bibtex pages are found!
-  $bibfiles = array_merge(glob("$FarmD/wiki.d/Bibtex.[12]*"), glob("$FarmD/wiki.d/Bibtex.Definitions"));
-  if (!$bibfiles) {
-    # import .bib files from repo as pages in wiki in Bibtex group
-    require_once("$FarmD/cookbook/bibtexpages/importwikipagefromfile.php");
-    if ($BibtexConfig['initFromGit']) {
-      bibtex_importfiles($gitdir);
-    } else {
-      bibtex_importfiles("$FarmD/cookbook/bibtexpages/exampledata/");
-    }
-    $BibtexConfig['force_generate'] = true;
-  }
-}
-
-
-
-
-if ($BibtexConfig['enablePublicationsPage']) require_once("$FarmD/cookbook/bibtexpages/publicationspage.php");
+# create static publications html and source pages after every bibtex edit to allow fast loading 
+# -----------------------------------------------------------------------------------------------
+if ($BibtexConfig['enable_publications_page']) require_once("$FarmD/cookbook/bibtexpages/publicationspage.php");

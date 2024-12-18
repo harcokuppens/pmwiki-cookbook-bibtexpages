@@ -152,11 +152,20 @@ function HandleBibtexFormattedInSkin($pagename, $auth = 'edit')
   }
   $bibtex = ReadPage($pagename, READPAGE_CURRENT)['text'];
   $BibtexData = translateBibtex($bibtex);
-  $html = "<br><a href='?action=source'>view source</a>" . $BibtexData['output'];
   $exitCode = $BibtexData['exitCode'];
   if ($exitCode != 0) {
     $errorText = $BibtexData['errorText'];
     $html = "<h4>Error($exitCode):</h4><pre>$errorText</pre>";
+  } else {
+    $html = $BibtexData['output'];
+    # editing bibtex is different from editing normal wiki pages,
+    # therefore we give options to show an action menu specially for bibtex 
+    # own action menu; 
+    if ($BibtexData['show_bibtex_action_menu']) {
+      #$action_menu = "<br><hr><b>Bibtex actions: </b><br> &nbsp;&nbsp;<a href='?action=edit'>edit</a>  &nbsp;&nbsp; <a href='?action=source'>source</a> &nbsp;&nbsp; <a href='?action=rawsource'>raw source</a>  &nbsp;&nbsp; <a href='?action=rawhtml'>raw html</a><hr>";
+      $action_menu = "<br><b>Bibtex actions: </b><br> &nbsp;&nbsp;<a href='?action=edit'>edit</a>  &nbsp;&nbsp; <a href='?action=source'>source</a> &nbsp;&nbsp; <a href='?action=rawsource'>raw source</a>  &nbsp;&nbsp; <a href='?action=rawhtml'>raw html</a>";
+      $html = $action_menu . $$html;
+    }
   }
   $messages = implode('', (array)$MessagesFmt);
   $FmtV['$PageText'] = $messages . $html;
@@ -186,6 +195,26 @@ function HandleBibtexRawSource($pagename, $auth = 'read')
   PrintBibtexRawSource($pagename, $bibtexSource, $auth);
 }
 
+
+function HandleBibtexRawHtml($pagename, $auth = 'read')
+{
+
+  if (!PageExists($pagename)) {
+    HandleBibtexPageNotFound($pagename);
+    return;
+  }
+  $bibtexSource = ReadPage($pagename, READPAGE_CURRENT)['text'];
+  $BibtexData = translateBibtex($bibtexSource);
+  $exitCode = $BibtexData['exitCode'];
+  if ($exitCode != 0) {
+    $errorText = $BibtexData['errorText'];
+    $html = "<h4>Error($exitCode):</h4><pre>$errorText</pre>";
+  } else {
+    $html = $BibtexData['output'];
+  }
+  PrintBibtexRawHtml($pagename, $html, $auth);
+}
+
 function PrintBibtexSource($pagename, $bibtexSource, $auth = 'read')
 {
   global $HandleSourceFmt, $PageStartFmt, $PageEndFmt, $FmtV;
@@ -196,7 +225,8 @@ function PrintBibtexSource($pagename, $bibtexSource, $auth = 'read')
     # use prismjs for syntax highlighting source code ; basic usage see https://prismjs.com/#basic-usage
     $html = "<pre id='bibtex'  class='linkable-line-numbers line-numbers'><code class='language-bibtex match-braces'>" . htmlspecialchars($bibtexSource, ENT_QUOTES) . "</code></pre>";
   }
-  $html = "<h2 class='wikiaction'>Source $pagename </h2><a href='?action=rawsource'>raw source</a><br><br>" . $html;
+  #$html = "<h2 class='wikiaction'>Source $pagename </h2>&nbsp;&nbsp;<a href='?action=edit'>edit</a> &nbsp;&nbsp; <a href='?'>view</a>  &nbsp;&nbsp;<a href='?action=rawsource'>raw source</a>  &nbsp;&nbsp; <a href='?action=rawhtml'>raw html</a><br><br>" . $html;
+  $html = "<h2 class='wikiaction'>Source $pagename </h2>" . $html;
   $FmtV['$PageText'] = "$html";
 
   SDV($HandleSourceFmt, array(&$PageStartFmt, '$PageText', &$PageEndFmt));
@@ -216,5 +246,21 @@ function PrintBibtexRawSource($pagename, $bibtexSource, $auth = 'read')
     header($h);
   }
   echo $bibtexSource;
+  exit;
+}
+
+function PrintBibtexRawHtml($pagename, $html, $auth = 'read')
+{
+  global $HTTPHeaders;
+
+  if (trim($html) == '') {
+    $html = 'Page contains no text';
+  }
+
+  foreach ($HTTPHeaders as $h) {
+    #$h = preg_replace('!^Content-type:\\s+text/html!i', 'Content-type: text/plain', $h);
+    header($h);
+  }
+  echo $html;
   exit;
 }

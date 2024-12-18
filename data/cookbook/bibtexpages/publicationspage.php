@@ -24,14 +24,44 @@
 #    (:includepublications:)
 
 
-# generate a single publications overview page and source page from all bibtex sources combined
+#-----------------------------------------------------------------------------------------------
+#   setup
 #-----------------------------------------------------------------------------------------------
 
+
 # only generate the publications page (html and source page) when you succesfully saved a bibtex data page
+#-------------------------------------------------------------------------------------------------------
+
 if (isBibtexDataPage($pagename) && $action == "edit"   &&   $EnablePost == true) {
   $EditFunctions[] = "generatePublicationsPage"; // Add to end of $EditFunctions
 }
 
+# generate initial page directly on first request
+#------------------------------------------------
+
+# if not yet created then create publications page on first query to a page on the wiki
+$publications_html = $BibtexConfig['publications_html'];
+if (! file_exists($publications_html) || $BibtexConfig['force_generate']) {
+  require_once("$FarmD/cookbook/bibtexpages/bibtexutils.php");
+  $xpage = null;
+  $new = null;
+  generatePublicationsPage($pagename, $xpage, $new);
+}
+
+# includepublications directive
+#-------------------------------
+# define a directive you can place in a wiki page to include the publications overview page in that wiki page
+
+Markup('includepublications', 'directives', '/\\(:includepublications\s*:\\)/', "mu_include_pub_mixed");
+
+
+#-----------------------------------------------------------------------------------------------
+#   functions
+#-----------------------------------------------------------------------------------------------
+
+
+# generate a single publications overview page and source page from all bibtex sources combined
+#-----------------------------------------------------------------------------------------------
 function generatePublicationsPage($pagename, &$page, &$new)
 {
   global $EnablePost, $FarmD, $BibtexConfig;
@@ -78,39 +108,32 @@ function generatePublicationsPage($pagename, &$page, &$new)
   if ($returnval == false) ErrorAbort($pagename, "saving publications html failed", -1, false);
 }
 
-# generate initial page directly on first request
-#------------------------------------------------
-
-# if not yet created then create publications page on first query to a page on the wiki
-$publications_html = $BibtexConfig['publications_html'];
-if (! file_exists($publications_html) || $BibtexConfig['force_generate']) {
-  require_once("$FarmD/cookbook/bibtexpages/bibtexutils.php");
-  $xpage = null;
-  $new = null;
-  generatePublicationsPage($pagename, $xpage, $new);
-}
 
 
 
-# includepublications directive
-#-------------------------------
-#   a directive you can place in a wiki page to include the publications overview page in that wiki page
 
-Markup('includepublications', 'directives', '/\\(:includepublications\s*:\\)/', "mu_includesrcfile_mixed");
-
-function mu_includefile($m)
+# include the publications overview page in wiki page
+#----------------------------------------------------
+function mu_include_pub_embedhtml($m)
 {
   global $BibtexConfig;
 
   $publications_html = $BibtexConfig['publications_html'];
-  #$links= "<a href='?srcpublications'>source</a> <a href='?rawsrcpublications'>raw source</a><br>";
-  $links = "<a href='?srcpublications'>view source</a><br>";
-  $text = $links . file_get_contents($publications_html);
+  $links = "";
+  if ($BibtexConfig['publications_link_source']) {
+    $links = "<a href='?rawsrcpublications'>source</a>";
+  }
+  if ($BibtexConfig['publications_link_html']) {
+    $links = $links . " <a href='?rawhtmlpublications'>html</a>";
+  }
+  $text = $links . "<br>" . file_get_contents($publications_html);
   # We use the Keep() function here to prevent the output from being further processed by PmWiki's markup rule
   return Keep($text);
 }
 
-function mu_includesrcfile($m)
+# note: advised not used, because to slow for large source files
+#        -> that's why in mu_include_pub_embedhtml I disabled link to ?srcpublications in favor of ?rawsrcpublications
+function mu_include_pub_embedsrc($m)
 {
   global $FarmD, $BibtexConfig;
 
@@ -135,7 +158,7 @@ function mu_includesrcfile($m)
   return Keep($html);
 }
 
-function mu_includesrcfile_rawsource($m)
+function mu_include_pub_rawsource($m)
 {
   global $HTTPHeaders, $BibtexConfig;
 
@@ -150,13 +173,30 @@ function mu_includesrcfile_rawsource($m)
   exit;
 }
 
-function mu_includesrcfile_mixed($m)
+function mu_include_pub_rawhtml($m)
+{
+  global $HTTPHeaders, $BibtexConfig;
+
+  $publications_html = $BibtexConfig['publications_html'];
+
+  $htmlSource = file_get_contents($publications_html);
+  foreach ($HTTPHeaders as $h) {
+    #$h = preg_replace('!^Content-type:\\s+text/html!i', 'Content-type: text/plain', $h);
+    header($h);
+  }
+  echo $htmlSource;
+  exit;
+}
+
+function mu_include_pub_mixed($m)
 {
   if (strpos($_SERVER['QUERY_STRING'], "rawsrcpublications") !== false) {
-    return mu_includesrcfile_rawsource($m);
+    return mu_include_pub_rawsource($m);
   } elseif (strpos($_SERVER['QUERY_STRING'], "srcpublications") !== false) {
-    return mu_includesrcfile($m);
+    return mu_include_pub_embedsrc($m);
+  } elseif (strpos($_SERVER['QUERY_STRING'], "rawhtmlpublications") !== false) {
+    return mu_include_pub_rawhtml($m);
   } else {
-    return mu_includefile($m);
+    return mu_include_pub_embedhtml($m);
   }
 }
