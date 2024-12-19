@@ -2,7 +2,7 @@
 
 function enableSyntaxHighlightingForBibtex()
 {
-  global $action, $HTMLHeaderFmt, $PubDirUrl, $EnablePmSyntax, $PageEditForm, $HTMLStylesFmt;
+  global $action, $HTMLHeaderFmt, $HTMLFooterFmt, $PubDirUrl, $EnablePmSyntax, $PageEditForm, $HTMLStylesFmt;
   # used prismjs javascript library to syntax highlight bibtex source code
   # downloaded:
   #   -  https://prismjs.com/download.html#themes=prism-solarizedlight&languages=markup+css+clike+javascript&plugins=line-highlight+line-numbers+autolinker+toolbar+copy-to-clipboard+match-braces
@@ -12,12 +12,15 @@ function enableSyntaxHighlightingForBibtex()
   #   - took latest source from https://github.com/PrismJS/live/ 
 
   $BibtexPagesPubDirUrl = $PubDirUrl . '/bibtexpages/';
-  # TODO:  update sources, and should js not be in footer instead as shown in example at https://prismjs.com/#basic-usage
+  # TODO:  update sources, example at https://prismjs.com/#basic-usage
+
   $HTMLHeaderFmt['BibtexHighlighting'] = '       
       <!--  alternative color scheme <link rel="stylesheet" href="' . $BibtexPagesPubDirUrl . '/prism/prism-solarizedlight.css" /> -->
       <link rel="stylesheet" href="' . $BibtexPagesPubDirUrl . '/prism/prism.css" /> 
       <link rel="stylesheet" href="' . $BibtexPagesPubDirUrl . '/prism/prism-live.css" />
+      ';
 
+  $HTMLFooterFmt['BibtexHighlighting'] = '       
       <!-- online bliss:  <script src="https://blissfuljs.com/bliss.shy.min.js"></script> -->
       <script src="' . $BibtexPagesPubDirUrl . '/prism/bliss.shy.min.js"></script>
        
@@ -26,7 +29,7 @@ function enableSyntaxHighlightingForBibtex()
       ';
 
   if ($action == "edit") {
-    $HTMLHeaderFmt['BibtexHighlighting'] =  $HTMLHeaderFmt['BibtexHighlighting'] . '
+    $HTMLFooterFmt['BibtexHighlighting'] =  $HTMLFooterFmt['BibtexHighlighting'] . '
         <script src="' . $BibtexPagesPubDirUrl . '/prism/prism-live.js"></script>
         <script src="' . $BibtexPagesPubDirUrl . '/prism/prism-live-toggleHighlight.js"></script>
         ';
@@ -58,7 +61,7 @@ function enableSyntaxHighlightingForBibtex()
     $HTMLStylesFmt['prismlive'] = <<<EOT
           /* set size defaults for content of container  */
           #wikiedit textarea#text {
-              height: 35em;
+              /*  height: 35em; */ /* set height by setting headerwithfooterheight in prism-live-toggleHighlight.js */
               width:100%;
               border: 1px outset grey; 
               background-color: transparent;  
@@ -66,7 +69,7 @@ function enableSyntaxHighlightingForBibtex()
           }  
           /* textarea and pre with both prism-live class should have same size  */
           .prism-live {
-            height: 35em;
+            /*  height: 35em; */ /* set height by setting headerwithfooterheight in prism-live-toggleHighlight.js */
             width:100%; 
             border: 1px outset grey; 
             overscroll-behavior: none;

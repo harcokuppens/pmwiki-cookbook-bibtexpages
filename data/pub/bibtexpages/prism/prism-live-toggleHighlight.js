@@ -68,8 +68,8 @@ function adaptTextareaWithWindowSize() {
    // Acquiring height
    var documentheight = document.documentElement.clientHeight;
    // calibrate height of header and footer arround text edit field for code 
-   // headerwithfooterheight=350;
-   headerwithfooterheight = 450;
+   headerwithfooterheight = 330;
+   //headerwithfooterheight = 450;
    // maximize height of text edit field where it keeps buttons below it on screen
    p = document.querySelectorAll('.prism-live');
    outerdiv = p[0];
