@@ -40,8 +40,10 @@ if (isBibtexDataPage($pagename) && $action == "edit"   &&   $EnablePost == true)
 #------------------------------------------------
 
 # if not yet created then create publications page on first query to a page on the wiki
-$publications_html = $BibtexConfig['publications_html'];
-if (! file_exists($publications_html) || $BibtexConfig['force_generate']) {
+$publications_html = $BibtexConfig['publications_dir']  . "/" . $BibtexConfig['publications_html'];
+$publications_source = $BibtexConfig['publications_dir']  . "/" . $BibtexConfig['publications_source'];
+
+if (! file_exists($publications_html) || ! file_exists($publications_source) || $BibtexConfig['force_generate']) {
   require_once("$FarmD/cookbook/bibtexpages/bibtexutils.php");
   $xpage = null;
   $new = null;
@@ -65,8 +67,8 @@ Markup('includepublications', 'directives', '/\\(:includepublications\s*:\\)/', 
 function generatePublicationsPage($pagename, &$page, &$new)
 {
   global $EnablePost, $FarmD, $BibtexConfig;
-  $publications_html = $BibtexConfig['publications_html'];
-  $publications_source = $BibtexConfig['publications_source'];
+  $publications_html = $BibtexConfig['publications_dir']  . "/" . $BibtexConfig['publications_html'];
+  $publications_source = $BibtexConfig['publications_dir']  . "/" . $BibtexConfig['publications_source'];
   if (file_exists($publications_html) && $EnablePost != true) {
     // if a publications page does not yet exist then we do not skip and generate one. 
     // otherwise we skip generating publications page because no new wiki page is saved in a POST request
@@ -118,7 +120,7 @@ function mu_include_pub_embedhtml($m)
 {
   global $BibtexConfig;
 
-  $publications_html = $BibtexConfig['publications_html'];
+  $publications_html = $BibtexConfig['publications_dir']  . "/" .  $BibtexConfig['publications_html'];
   $links = "";
   if ($BibtexConfig['publications_link_source']) {
     $links = "<a href='?rawsrcpublications'>source</a>";
@@ -137,7 +139,7 @@ function mu_include_pub_embedsrc($m)
 {
   global $FarmD, $BibtexConfig;
 
-  $publications_source = $BibtexConfig['publications_source'];
+  $publications_source = $BibtexConfig['publications_dir']  . "/" . $BibtexConfig['publications_source'];
   $bibtexSource = file_get_contents($publications_source);
   if (trim($bibtexSource) == '') {
     $html = 'Page contains no text';
@@ -162,7 +164,7 @@ function mu_include_pub_rawsource($m)
 {
   global $HTTPHeaders, $BibtexConfig;
 
-  $publications_source = $BibtexConfig['publications_source'];
+  $publications_source = $BibtexConfig['publications_dir']  . "/" . $BibtexConfig['publications_source'];
 
   $bibtexSource = file_get_contents($publications_source);
   foreach ($HTTPHeaders as $h) {
@@ -177,7 +179,7 @@ function mu_include_pub_rawhtml($m)
 {
   global $HTTPHeaders, $BibtexConfig;
 
-  $publications_html = $BibtexConfig['publications_html'];
+  $publications_html = $BibtexConfig['publications_dir']  . "/" . $BibtexConfig['publications_html'];
 
   $htmlSource = file_get_contents($publications_html);
   foreach ($HTTPHeaders as $h) {
