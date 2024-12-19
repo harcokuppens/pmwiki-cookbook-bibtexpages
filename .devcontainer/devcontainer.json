@@ -33,7 +33,7 @@
       "**/vendor/**/{Tests,tests}/**",
       "**/.history/**",
       "**/vendor/**/vendor/**",
-      "**/_GITREPO/**"
+      "**/_GIT_REPO_COOKBOOK/**"
     ]
   },
   "customizations": {

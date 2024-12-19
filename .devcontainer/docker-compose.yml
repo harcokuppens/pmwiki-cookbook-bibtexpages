@@ -39,7 +39,7 @@ services:
     #
     # Volumes:
     # - we bind pwmiki subfolders from repository in pmwiki folder. (by default gets owned by user root because container is run as root)
-    # - we bind the root of this repository in the _GITREPO subfolder of the pmwiki folder used as workspace folder in the devcontainer,
+    # - we bind the root of this repository in the _GIT_REPO_COOKBOOK subfolder of the pmwiki folder used as workspace folder in the devcontainer,
     #   so that we can do git commits to the git repository from within the devcontainer.
     #   Vscode automatically detects all git repositories with a .git directory in the workspace folder or subdirectories.
     # In devcontainer.json vscode attaches itself as www-data user (remoteUser), and it uses the postStartCommand to make 
@@ -62,4 +62,4 @@ services:
         target: /var/www/html/pmwiki/pub/bibtexpages
       - type: bind
         source: ../
-        target: /var/www/html/pmwiki/_GITREPO
+        target: /var/www/html/pmwiki/_GIT_REPO_COOKBOOK
